@@ -1,7 +1,5 @@
+const Company = require("../models/company");
 const { Op } = require("sequelize");
-const AdminMiddleware = require("./middlewares/AdminMiddleWare.js");
-
-const Company = require("./models/company.js");
 
 async function upsert(values, condition) {
     const obj = await Company.findOne({ where: condition });
@@ -12,20 +10,8 @@ async function upsert(values, condition) {
     }
 }
 
-const add = (req, res) => {
-    const condition = req.params.id ? {id: req.params.id} : undefined;
-
-    upsert(req.body, condition).then(obj => {
-        res.json(obj);
-    })
-}
-
-function companies(app) {
-    app.use("/add", AdminMiddleware);
-    app.post('/add', add);
-    app.post('/add/:id', add);
-
-    app.get('/get/:id', function(req, res) {
+const СompaniesController = {
+    getById: function(req, res) {
         Company.findOne({where: {
             id: req.params.id
         }}).then(company => {
@@ -35,13 +21,12 @@ function companies(app) {
                 return res.status(404).json({message: "Company not found"});
             }
         })
-    });
+    },
 
-    app.get('/list/:startId/:category?', function(req, res) {
+    list: function(req, res) {
         const categoryCondition = req.params.category ? {
             category: req.params.category
-         } : {};
-
+        } : {};
 
         Company.findAll({
             where: {
@@ -52,7 +37,15 @@ function companies(app) {
             },
             limit: 200
         }).then(companies => res.json(companies))
-    });
+    },
+
+    add: function(req, res) {
+        const condition = req.params.id ? {id: req.params.id} : undefined;
+
+        upsert(req.body, condition).then(obj => {
+            res.json(obj);
+        })   
+    }
 }
 
-module.exports = companies;
+module.exports = СompaniesController;
