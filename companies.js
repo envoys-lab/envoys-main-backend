@@ -50,7 +50,7 @@ function companies(app) {
                 },
                 ...categoryCondition
             },
-            limit: 50
+            limit: 200
         }).then(companies => res.json(companies))
     });
 }
