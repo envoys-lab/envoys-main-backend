@@ -9,8 +9,8 @@ const AdminMiddleware = (req, res, next) => {
         where: {
             value: authKey
         }
-    }).then(obj => {
-        res.json({test: 1, obj:obj});
+    }).then(() => {
+        next();
     }).catch(() => {
         res.status(404).json({message: "Not found"})
     })
