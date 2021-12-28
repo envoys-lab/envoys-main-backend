@@ -75,6 +75,10 @@ const Company = db.define("company", {
     sv: {
         type: db.Sequelize.STRING,
         allowNull: false
+    },
+    files: {
+        type: db.Sequelize.STRING,
+        allowNull: false
     }
     
 });
