@@ -1,4 +1,5 @@
 const { Op } = require("sequelize");
+const AdminMiddleware = require("./middlewares/AdminMiddleWare.js");
 
 const Company = require("./models/company.js");
 
@@ -20,6 +21,7 @@ const add = (req, res) => {
 }
 
 function companies(app) {
+    app.use("/add", AdminMiddleware);
     app.post('/add', add);
     app.post('/add/:id', add);
 
